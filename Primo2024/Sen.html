@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sender</title>
+</head>
+<body>
+    <h2>Inserisci i tuoi dati</h2>
+    <form id="userForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" name="cognome" required><br><br>
+        <label for="indirizzo">Indirizzo:</label>
+        <input type="text" id="indirizzo" name="indirizzo" required><br><br>
+        <button type="submit">Invia Dati</button>
+    </form>
+
+    <script>
+        document.getElementById("userForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            // Legge i dati
+            const nome = document.getElementById("nome").value;
+            const cognome = document.getElementById("cognome").value;
+            const indirizzo = document.getElementById("indirizzo").value;
+            // Crea JSON
+            const dati = {
+                nome: nome,
+                cognome: cognome,
+                indirizzo: indirizzo
+            };
+            // Salva JSON
+            localStorage.setItem("dati", JSON.stringify(dati));
+
+            window.location.href = "rec.html";
+        });
+    </script>
+</body>
+</html>

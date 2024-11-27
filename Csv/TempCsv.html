@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #fileIn {
+            margin-bottom: 20px;
+        }
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="fileIn" accept=".csv">
+    <canvas id="chartCvs" width="800" height="400"></canvas>
+
+    <script>
+        document.getElementById('fileIn').addEventListener('change', start, false); //Fa partire il codice quando si seleziona il file
+
+        function start(event) { //Legge le info dal file e fa partire le altre funzioni
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const text = e.target.result;
+                    const dati = gestoreCSV(text);
+                    disegna(dati);
+                }
+                reader.readAsText(file);
+            }
+        }
+
+        function gestoreCSV(text) { //Gestisce la spaziatura del file CSV
+            const linee = text.trim().split('\n');
+            const dati = linee.map(line => {
+                const [anno, temperatura] = line.split(',');
+                return { anno: parseInt(anno, 10), temperatura: parseFloat(temperatura) };
+            });
+            return dati;
+        }
+
+        function disegna(dati) { //Disegna il canvas
+            const canvas = document.getElementById('chartCvs');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const spazioVuoto = 50;
+            const alt = canvas.height - spazioVuoto * 2;
+            const larg = canvas.width - spazioVuoto * 2;
+
+            const anni = dati.map(d => d.anno);
+            const temperature = dati.map(d => d.temperatura);
+
+            const minAnno = Math.min(...anni);
+            const maxAnno = Math.max(...anni);
+            const minTemp = 10;
+            const maxTemp = 20;
+
+            function getX(anno) { // Funzione per calcolare la posizione X sul canvas
+                return spazioVuoto + (anno - minAnno) / (maxAnno - minAnno) * larg;
+            }
+
+            function getY(temp) { // Funzione per calcolare la posizione Y sul canvas
+                return canvas.height - spazioVuoto - (temp - minTemp) / (maxTemp - minTemp) * alt;
+            }
+
+            ctx.beginPath();  // Disegna il grafico a linee
+            ctx.moveTo(getX(anni[0]), getY(temperature[0]));
+            for (let i = 1; i < dati.length; i++) {
+                ctx.lineTo(getX(anni[i]), getY(temperature[i]));
+            }
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath(); // Disegna gli assi del grafico
+            ctx.moveTo(spazioVuoto, canvas.height - spazioVuoto);
+            ctx.lineTo(canvas.width - spazioVuoto, canvas.height - spazioVuoto);
+            ctx.lineTo(canvas.width - spazioVuoto, spazioVuoto);
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.textAlign = 'center'; // Disegna le etichette degli anni sull'asse X
+            ctx.textBaseline = 'top';
+            for (let anno = minAnno; anno <= maxAnno; anno += Math.ceil((maxAnno - minAnno) / 10)) {
+                const x = getX(anno);
+                ctx.fillText(anno, x, canvas.height - spazioVuoto + 5);
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height - spazioVuoto);
+                ctx.lineTo(x, canvas.height - spazioVuoto - 5);
+                ctx.stroke();
+            }
+
+            ctx.textAlign = 'right'; // Disegna le etichette delle temperature sull'asse Y
+            ctx.textBaseline = 'middle';
+            for (let temp = minTemp; temp <= maxTemp; temp += (maxTemp - minTemp) / 10) {
+                const y = getY(temp);
+                ctx.fillText(temp.toFixed(1), spazioVuoto - 5, y);
+                ctx.beginPath();
+                ctx.moveTo(spazioVuoto, y);
+                ctx.lineTo(spazioVuoto + 5, y);
+                ctx.stroke();
+            }
+        }
+    </script>
+</body>
+</html>

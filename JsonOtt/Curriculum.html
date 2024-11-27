@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title id="page-title"></title>
+</head>
+<body>
+    <div class="header" id="header"></div>
+    <div class="divider"></div>
+    <div class="details" id="details"></div>
+
+    <script>
+        // Recupera i dati dal localStorage
+        var selectedProfile = JSON.parse(localStorage.getItem("selectedProfile"));
+
+        // Imposta il titolo e l'intestazione
+        document.getElementById("page-title").innerText = "CV di " + selectedProfile.Nome + " " + selectedProfile.Cognome;
+        document.getElementById("header").innerText = selectedProfile.Nome + " " + selectedProfile.Cognome;
+
+        // Crea i dettagli del profilo
+        var detailsContainer = document.getElementById("details");
+        for (var key in selectedProfile) {
+            if (key !== "Telefono" && key !== "Cv") {
+                detailsContainer.innerHTML += "<strong>" + key + ":</strong> " + selectedProfile[key] + "<br>";
+            }
+        }
+
+        // Aggiunge i numeri di telefono
+        var phoneNumbers = selectedProfile.Telefono[0];
+        detailsContainer.innerHTML += "<br><strong>Telefono:</strong><br>";
+        for (var type in phoneNumbers) {
+            detailsContainer.innerHTML += "<strong>" + type + ":</strong> " + phoneNumbers[type] + "<br>";
+        }
+    </script>
+</body>
+</html>

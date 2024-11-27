@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receiver</title>
+</head>
+<body>
+    <h2>Dati Utente</h2>
+    <div id="output"></div>
+
+    <script>
+        // Leggi i dati
+        const storedData = localStorage.getItem("dati");
+
+        if (storedData) {
+            // Parsa JSON
+            const dati = JSON.parse(storedData);
+
+            // Stampa i dati
+            document.getElementById("output").innerHTML = `
+                <p><strong>Nome:</strong> ${dati.nome}</p>
+                <p><strong>Cognome:</strong> ${dati.cognome}</p>
+                <p><strong>Indirizzo:</strong> ${dati.indirizzo}</p>
+            `;
+        } else {
+            document.getElementById("output").innerHTML = "<p>Nessun dato trovato.</p>";
+        }
+    </script>
+</body>
+</html>

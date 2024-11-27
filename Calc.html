@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calcolatrice 2.0</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+
+    #calculator {
+        width: 300px;
+        margin: 50px auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 70px;
+        height: 40px;
+        margin: 5px;
+        font-size: 16px;
+    }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+    <input type="text" id="display">
+    <br>
+        <button onclick="aggiungiDisplay('1')">1</button>
+        <button onclick="aggiungiDisplay('2')">2</button>
+        <button onclick="aggiungiDisplay('3')">3</button>
+    <br>
+        <button onclick="aggiungiDisplay('4')">4</button>
+        <button onclick="aggiungiDisplay('5')">5</button>
+        <button onclick="aggiungiDisplay('6')">6</button>
+    <br>
+        <button onclick="aggiungiDisplay('7')">7</button>
+        <button onclick="aggiungiDisplay('8')">8</button>
+        <button onclick="aggiungiDisplay('9')">9</button>
+    <br>
+        <button onclick="aggiungiDisplay('0')">0</button>
+        <button onclick="aggiungiDisplay('00')">00</button>
+        <button onclick="aggiungiDisplay('.')">.</button>
+    <br>
+        <button onclick="addizzione()">+</button>
+        <button onclick="sottrazione()">-</button>
+        <button onclick="moltiplicazione()">*</button>
+        <button onclick="divisione()">/</button>
+    <br>
+        <button onclick="cancella()">C</button>
+        <button onclick="calcola()">=</button>
+        <button onclick="radice()">√</button>
+        <button onclick="potenza()">^</button>
+        <button onclick="radice()">%</button>
+    </div>
+    <script>
+        var op;
+        var n1;
+
+        function aggiungiDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function addizzione(){
+             n1 = parseFloat(document.getElementById('display').value);
+            op = "+";
+            return cancella();
+        }
+
+        function sottrazione(){
+             n1 = parseFloat(document.getElementById('display').value);
+             op = "-";
+            return cancella();
+        }
+
+        function moltiplicazione(){
+             n1 = parseFloat(document.getElementById('display').value);
+             op = "*";
+            return cancella();
+        }
+
+        function divisione(){
+             n1 = parseFloat(document.getElementById('display').value);
+             op = "/";
+            return cancella();
+        }
+
+        function potenza(){
+             n1 = parseFloat(document.getElementById('display').value);
+             op = "^";
+            return cancella();
+        }
+
+        function radice(){
+            n1 = parseFloat(document.getElementById('display').value);
+            n1 = Math.sqrt(n1);
+            document.getElementById('display').value = n1;
+
+        }
+
+        function cancella() {
+            document.getElementById('display').value = '';
+        }
+
+        function calcola() {
+            var risultato;
+            var n2 = parseFloat(document.getElementById('display').value);
+            console.log("n1: " + n1);
+            console.log("op: " + op);
+            if (op == "+"){
+                risultato = n1 + n2;
+            }
+            else if (op == "-"){
+                risultato = n1 - n2;
+            }
+            else if (op == "*"){
+                risultato = n1 * n2;
+            }
+            else if (op == "/"){
+                if (n2 == "0"){
+                    risultato = "Errore";
+                }
+                else {
+                    risultato = n1 / n2;
+                }
+            }
+            else if (op == "^"){
+                risultato = Math.pow(n1,n2);
+            }
+            document.getElementById('display').value = risultato;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Validation</title>
+</head>
+<body>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome"><br><br>
+
+    <label for="cognome">Cognome:</label>
+    <input type="text" id="cognome" name="cognome"><br><br>
+
+    <label>Materie valutate:</label><br>
+    <input type="checkbox" id="italiano" name="materie[]" value="Italiano"> Italiano<br>
+    <input type="checkbox" id="storia" name="materie[]" value="Storia"> Storia<br>
+    <input type="checkbox" id="matematica" name="materie[]" value="Matematica"> Matematica<br>
+    <input type="checkbox" id="inglese" name="materie[]" value="Inglese"> Inglese<br>
+    <input type="checkbox" id="informatica" name="materie[]" value="Informatica"> Informatica<br>
+    <input type="checkbox" id="tpsit" name="materie[]" value="TPSIT"> TPSIT<br><br>
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email"><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password"><br><br>
+
+    <input type="button" value="Submit" onclick="stampa()">
+    
+    <p id="nom"></p>    <p id="cogn"></p>
+    
+    <br>
+    <p id="ita"></p>
+    <p id="mate"></p>
+    <p id="sto"></p>
+    <p id="tp"></p>
+     <p id="inf"></p>
+     <br>
+     
+<script>
+function stampa() {
+    let isEmailValid1 = false;
+    let isEmailValid2 = false;
+    let isEmailValid3 = true;
+    let isEmailFinal = false;
+
+    let emailValue = document.getElementById("email").value;
+
+    for (let i = 0; i < emailValue.length; i++) {
+        if (emailValue[i] == "@") {
+            isEmailValid1 = true;
+        }
+        if (emailValue[i] == ".") {
+            isEmailValid2 = true;
+        }
+    }
+
+    for (let i = 0; i < 10; i++) {
+        if (emailValue[emailValue.length - 1] == i) {
+            i = 10;
+            isEmailValid3 = false;
+        }
+    }
+
+    if (isEmailValid1 && isEmailValid2 && isEmailValid3) {
+        isEmailFinal = true;
+    }
+
+    let passwordValue = document.getElementById("password").value;
+    let isPasswordValid1 = false;
+
+    let numLetters = 0;
+    let numDigits = 0;
+
+    if (passwordValue.length > 7) {
+        const letterCharacters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+
+        for (let i = 0; i < passwordValue.length; i++) {
+            if (letterCharacters.indexOf(passwordValue[i]) !== -1) {
+                numLetters++;
+            }
+        }
+
+        for (let i = 0; i < passwordValue.length; i++) {
+            if (passwordValue[i] >= "0" && passwordValue[i] <= "9") {
+                numDigits++;
+            }
+        }
+
+        if (numLetters + numDigits == passwordValue.length) {
+            isPasswordValid1 = true;
+        }
+    }
+
+    if (isEmailFinal && isPasswordValid1) {
+        var nomeValue = document.getElementById("nome").value;
+        var cognomeValue = document.getElementById("cognome").value;
+
+        document.getElementById("nom").innerHTML = nomeValue;
+        document.getElementById("cogn").innerHTML = cognomeValue;
+
+        if (document.getElementById("italiano").checked) {
+            document.getElementById("ita").innerHTML = "Italiano";
+        }
+        if (document.getElementById("matematica").checked) {
+            document.getElementById("mate").innerHTML = "Matematica";
+        }
+        if (document.getElementById("storia").checked) {
+            document.getElementById("sto").innerHTML = "Storia";
+        }
+        if (document.getElementById("tpsit").checked) {
+            document.getElementById("tp").innerHTML = "TPSIT";
+        }
+        if (document.getElementById("informatica").checked) {
+            document.getElementById("inf").innerHTML = "Informatica";
+        }
+    } else {
+        alert("Email o password non valide.");
+    }
+}
+</script>
+</body>
+</html>

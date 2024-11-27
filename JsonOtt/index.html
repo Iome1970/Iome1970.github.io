@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabella Dati</title>
+</head>
+<body>
+    <div class="table-container">
+        <table id="data-table"></table>
+    </div>
+
+    <script>
+        (function() {
+            var fullData;
+            var xhr = new XMLHttpRequest();
+
+            xhr.onload = function() {
+                if (xhr.status === 200 && xhr.readyState === 4) {
+                    var data = JSON.parse(xhr.responseText);
+                    renderTable(data);
+                    fullData = data;  
+                }
+            };
+
+            xhr.open("GET", "prova.json", true);
+            xhr.send();
+
+            function renderTable(data) {
+                var maxCols = 0;
+                var refIndex = 0;
+
+                // Trova il numero massimo di colonne
+                data.forEach(function(obj, idx) {
+                    var keysCount = Object.keys(obj).length;
+                    if (keysCount > maxCols) {
+                        maxCols = keysCount;
+                        refIndex = idx;
+                    }
+                });
+
+                // Crea la prima riga (intestazione)
+                var headerRow = createRow(Object.keys(data[refIndex]), "header-cell");
+                document.getElementById('data-table').appendChild(headerRow);
+
+                // Crea le righe con i dati
+                data.forEach(function(item, idx) {
+                    var row = document.createElement("tr");
+                    Object.keys(data[refIndex]).forEach(function(key) {
+                        var cell = document.createElement("td");
+                        cell.className = "data-cell";
+
+                        // Formatta telefono
+                        if (key === "Telefono") {
+                            cell.innerHTML = formatPhoneNumbers(item[key]);
+                        } else if (key === "Cv") {
+                            var link = document.createElement("a");
+                            link.href = "javascript:void(0)";
+                            link.innerText = "Cliccare qui per Visualizzare";
+                            link.onclick = function() { openCv(idx); };
+                            cell.appendChild(link);
+                        } else {
+                            cell.innerHTML = item[key] !== undefined ? item[key] : "/";
+                        }
+                        row.appendChild(cell);
+                    });
+                    document.getElementById('data-table').appendChild(row);
+                });
+            }
+
+            // Funzione per creare una riga
+            function createRow(items, className) {
+                var row = document.createElement("tr");
+                items.forEach(function(item) {
+                    var cell = document.createElement("td");
+                    cell.className = className;
+                    cell.textContent = item;
+                    row.appendChild(cell);
+                });
+                return row;
+            }
+
+            // Funzione per formattare i numeri di telefono
+            function formatPhoneNumbers(numbers) {
+                return Object.entries(numbers[0]).map(function(entry) {
+                    var label = entry[0];
+                    var number = entry[1];
+                    return "<strong>" + label + ":</strong> " + number;
+                }).join("<br>");
+            }
+
+            // Funzione per aprire il CV
+            function openCv(index) {
+                localStorage.setItem("selectedProfile", JSON.stringify(fullData[index]));
+                window.location.href = "Curriculum.html";
+            }
+        })();
+    </script>
+</body>
+</html>

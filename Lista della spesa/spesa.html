@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spesa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 24px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button#bottoneStampa {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        button#bottoneStampa:hover {
+            background-color: #45a049;
+        }
+        button.bottoneCancella {
+            background-color: #f44336;
+            color: white;
+            margin-right: 10px;
+        }
+        button.bottoneCancella:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body onload="startUp()">
+    <button id="bottoneStampa">Stampa Lista</button>
+    <br>
+    <div id="listaSpesa"></div>
+
+    <script>
+        function startUp() {
+            document.getElementById("bottoneStampa").addEventListener("click", stampaLista);
+            listaSpesa();
+        }
+
+        function listaSpesa() {
+            const storedList = localStorage.getItem("lista");
+            if (storedList) {
+                const vetLista = JSON.parse(storedList);
+                
+                vetLista.forEach((item, index) => {
+                    const spanItem = document.createElement("span");
+                    spanItem.textContent = item;
+
+                    const bottoneCancella = document.createElement("button");
+                    bottoneCancella.textContent = "Canc";
+                    bottoneCancella.className = "bottoneCancella";
+                    bottoneCancella.onclick = () => cancellaProdotto(index, vetLista);
+
+                    document.getElementById("listaSpesa").append(spanItem, bottoneCancella, document.createElement("br"));
+                });
+            }
+        }
+
+        function cancellaProdotto(index, vetLista) {
+            vetLista.splice(index, 1);
+            localStorage.setItem("lista", JSON.stringify(vetLista));
+            window.location.reload();
+        }
+
+        function stampaLista() {
+            const vetLista = JSON.parse(localStorage.getItem("lista") || '[]');
+            const a = document.createElement('a');
+            a.href = `data:application/octet-stream,${encodeURIComponent(vetLista.join("\n"))}`;
+            a.setAttribute("download", "listaSpesa.txt");
+            a.click();
+        }
+    </script>
+</body>
+</html>
