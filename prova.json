@@ -1,0 +1,35 @@
+[
+    { 
+        "Nome":"Giulia",
+        "Cognome":"Rossi",
+        "Indirizzo":"Via Roma 10",
+        "Citta":"Torino",
+        "Eta":30,
+        "Telefono":[
+            {"Casa":"1112223","Ufficio":"345345345676","Mobile":"34567890"}
+        ],
+        "Cv":"Cliccare qui per Visualizzare"
+    },
+    { 
+        "Nome":"Marco",
+        "Cognome":"Verdi",
+        "Indirizzo":"Corso Italia 5",
+        "Citta":"Firenze",
+        "Eta":28,
+        "Telefono":[
+            {"Casa":"4445556","Ufficio":"567567567890","Mobile":"45678912"}
+        ],
+        "Cv":"Cliccare qui per Visualizzare"
+    },
+    { 
+        "Nome":"Luca",
+        "Cognome":"Neri",
+        "Indirizzo":"Piazza del Popolo 20",
+        "Citta":"Roma",
+        "Eta":35,
+        "Telefono":[
+            {"Casa":"9988776","Ufficio":"678678678123","Mobile":"56789034"}
+        ],
+        "Cv":"Cliccare qui per Visualizzare"
+    }
+]
